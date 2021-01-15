@@ -1,13 +1,12 @@
 package com.facbrito.dscatalog.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +23,9 @@ public class CategoryService {
 	private CategoryRepository repository;
 
 	@Transactional(readOnly = true)
-	public List<CategoryDTO> findAll() {
-		List<Category> list = repository.findAll();
-		return list.stream().map(c -> new CategoryDTO(c)).collect(Collectors.toList());
+	public Page<CategoryDTO> findAll(PageRequest pageRequest) {
+		Page<Category> list = repository.findAll(pageRequest);
+		return list.map(c -> new CategoryDTO(c));
 	}
 
 	@Transactional(readOnly = true)
@@ -59,11 +58,9 @@ public class CategoryService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		} 
-		catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
-		} 
-		catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
