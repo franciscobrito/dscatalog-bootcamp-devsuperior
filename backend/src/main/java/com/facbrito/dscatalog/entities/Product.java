@@ -44,7 +44,6 @@ public class Product implements Serializable {
 	}
 
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -103,10 +102,6 @@ public class Product implements Serializable {
 
 	public Set<Category> getCategories() {
 		return categories;
-	}
-
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
 	}
 
 	@Override

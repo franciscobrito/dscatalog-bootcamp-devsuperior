@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.facbrito.dscatalog.dto.RoleDTO;
 import com.facbrito.dscatalog.dto.UserDTO;
 import com.facbrito.dscatalog.dto.UserInsertDTO;
+import com.facbrito.dscatalog.dto.UserUpdateDTO;
 import com.facbrito.dscatalog.entities.Role;
 import com.facbrito.dscatalog.entities.User;
 import com.facbrito.dscatalog.repositories.RoleRepository;
@@ -56,10 +57,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserDTO userDTO) {
+	public UserDTO update(Long id, UserUpdateDTO userUpdateDTO) {
 		try {
 			User user = repository.getOne(id);
-			copyDtoToEntity(userDTO, user);
+			copyDtoToEntity(userUpdateDTO, user);
 			user = repository.save(user);
 			return new UserDTO(user);
 		} catch (EntityNotFoundException e) {
